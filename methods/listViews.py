@@ -1,4 +1,4 @@
-#Usage: "$XXX.py <accountId> <webPropertyId>" 
+#Usage: "$XXX.py <accountId> <webPropertyId>"
 
 import sys, datetime
 sys.path.append('..')
@@ -8,11 +8,11 @@ from common.writeCsv import WriteCsv
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
-class GetViews:
+class ListViews:
     def __init__(self, accountId, webPropertyId):
 #        now = datetime.datetime.now()
 #        timestamp = now.strftime("%Y%m%d%H%M%S")
-        
+
         self.accountId = accountId
         self.webPropertyId = webPropertyId
         self.output_file_name = "list_views.csv"
@@ -40,7 +40,7 @@ class GetViews:
         defaultPage = []
         websiteUrl = []
         siteSearchQueryParameters = []
-        stripSiteSearchQueryParameters = [] 
+        stripSiteSearchQueryParameters = []
         siteSearchCategoryParameters = []
         stripsiteSearchCategoryParameters = []
         botFilteringEnabled = []
@@ -69,7 +69,7 @@ class GetViews:
             "作成日時": created,
             "更新日時": updated,
         }
-        
+
         index = 0
         for view in views.get('items', []):
             accountId.insert(index, view.get("accountId"))
@@ -89,11 +89,11 @@ class GetViews:
             enhancedECommerceTracking.insert(index, view.get("enhancedECommerceTracking"))
             created.insert(index, view.get("created"))
             updated.insert(index, view.get("updated"))
-            
+
             index += 1
 #        print(views_parsed)
         return views_parsed
-    
+
     def outputCsv(self):
         data_parsed = self.parse()
         WriteCsv.write(data_parsed, self.output_file_name)
@@ -103,6 +103,6 @@ if __name__ == '__main__':
     try:
         accountId = sys.argv[1]
         webPropertyId = sys.argv[2]
-        GetViews(accountId,webPropertyId).outputCsv()
+        ListViews(accountId,webPropertyId).outputCsv()
     except IndexError as error:
         print("Usage: $py XXX.py <account id> <property id> ")

@@ -4,16 +4,16 @@ import sys, datetime
 sys.path.append('..')
 from common.getServiceClient import GetServiceClient
 from common.writeCsv import WriteCsv
-from getViews import GetViews
+from listViews import ListViews
 #Google API Client
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
-class GetGoals:
+class ListGoals:
     def __init__(self, accountId, webPropertyId):
 #        now = datetime.datetime.now()
 #        timestamp = now.strftime("%Y%m%d%H%M%S")
-        
+
         self.accountId = accountId
         self.webPropertyId = webPropertyId
 #        self.output_file_name = "get_goals_"+ str(timestamp) + ".csv"
@@ -80,7 +80,7 @@ class GetGoals:
             "time_comparisonType": time_comparisonType,
             "time_comparisonValue": time_comparisonValue,
             "created": created,
-            "updated": updated, 
+            "updated": updated,
         }
 
         index = 0
@@ -110,7 +110,7 @@ class GetGoals:
                 page_matchType.insert(index, False)
                 page_firstStepRequired.insert(index, False)
                 page_steps.insert(index, False)
-                
+
             if goal.get('eventDetails'):
                 event_detail = goal.get('eventDetails')
                 event_eventConditions.insert(index, event_detail.get('eventConditions'))
@@ -118,7 +118,7 @@ class GetGoals:
             else:
                 event_eventConditions.insert(index, False)
                 event_useEventValue.insert(index, False)
-                
+
             if goal.get('visitNumPagesDetails'):
                 pv_detail = goal.get('visitNumPagesDetails')
                 pv_comparisonType.insert(pv_detail.get('comparisonType'))
@@ -127,7 +127,7 @@ class GetGoals:
                 pv_detail = goal.get('visitNumPagesDetails')
                 pv_comparisonType.insert(index, False)
                 pv_comparisonValue.insert(index, False)
-                
+
             if goal.get('visitTimeOnSiteDetails'):
                 time_detail = goal.get('visitTimeOnSiteDetails')
                 time_comparisonType.insert(time_detail.get('comparisonType'))
@@ -135,16 +135,16 @@ class GetGoals:
             else:
                 time_comparisonType.insert(index, False)
                 time_comparisonValue.insert(index, False)
-                
+
             index += 1
-            
+
         return goals_parsed
     def outputCsv(self, view_id):
         data_parsed = self.parse(view_id)
         WriteCsv.write(data_parsed, self.output_file_name)
-        
+
     def outputCsvLoop(self):
-        views_parsed = GetViews(self.accountId,self.webPropertyId).parse()
+        views_parsed = ListViews(self.accountId,self.webPropertyId).parse()
         view_ids = views_parsed[self.view_id_column_name]
         for id in view_ids:
             print("outputCsvLoop start - view id: ", id) #debug
@@ -155,6 +155,6 @@ if __name__ == '__main__':
     try:
         accountId = sys.argv[1]
         webPropertyId = sys.argv[2]
-        GetGoals(accountId, webPropertyId).outputCsvLoop()
+        ListGoals(accountId, webPropertyId).outputCsvLoop()
     except IndexError as error:
         print("Usage: $py XXX.py <account id> <property id> ")

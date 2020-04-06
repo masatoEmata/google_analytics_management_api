@@ -5,7 +5,7 @@ from common.getServiceClient import GetServiceClient
 from apiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
-class PutGoals:
+class UpdateGoals:
     def __init__(self, data_file_name):
         self.data_file_name = data_file_name
 
@@ -70,7 +70,7 @@ class PutGoals:
 #            print(goals)
             return goals
 
-    def putGoal(self, goal):
+    def updateGoal(self, goal):
         try:
             service = GetServiceClient.get()
             service.management().goals().update(
@@ -89,13 +89,13 @@ class PutGoals:
         #   print ('There was an API error : %s : %s' %
         #          (error.resp.status, error.resp.reason))
 
-    def putGoals(self):
+    def updateGoals(self):
         goals = self.getData()
         for goal in goals:
             print("start put a goal setting: ", goal)
-            self.putGoal(goal)
+            self.updateGoal(goal)
 
 if __name__ == "__main__":
     print("input data file name")
     data_file_name = "input_file/" + input()
-    PutGoals(data_file_name).putGoals()
+    UpdateGoals(data_file_name).updateGoals()
