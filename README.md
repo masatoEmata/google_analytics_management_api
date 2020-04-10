@@ -9,7 +9,7 @@ https://developers.google.com/analytics/devguides/config/mgmt/v3/quickstart/serv
 *1.認証キーの取得*  
 * GCPのサービスアカウントから認証設定でJSONキーを取得する  
  ※参照「ステップ 1: アナリティクス API を有効にする」  
-* 以下ディレクトリ内に設置する  
+* 「client_secrets.json」を以下ディレクトリ内に設置する  
  common > secret  
 
 *2.ライブラリの取得*  
